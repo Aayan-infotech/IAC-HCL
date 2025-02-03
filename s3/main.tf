@@ -67,7 +67,7 @@ resource "aws_s3_bucket_policy" "bucket_policy" {
   })
 }
 
-# Add bucket lifecycle rule to clean up objects
+# Add bucket lifecycle rule to clean 
 resource "aws_s3_bucket_lifecycle_configuration" "bucket_lifecycle" {
   bucket = aws_s3_bucket.my_bucket.id
 
