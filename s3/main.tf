@@ -76,7 +76,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "bucket_lifecycle" {
     status = "Enabled"
 
     expiration {
-      days = 45
+      days = 365
     }
   }
 } 
