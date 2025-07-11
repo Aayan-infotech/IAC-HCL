@@ -1,121 +1,128 @@
-# 🚀 AWS Terraform Modules – S3 & Secrets Manager
+# ✅ Terraform Infra for S3 Bucket & Secrets Manager
 
-This repository provides production-ready **Terraform modules** to manage:
+This repository provisions two AWS resources:
 
-- 🪣 **Amazon S3 Bucket** (with optional lifecycle configuration)
-- 🔐 **AWS Secrets Manager** (secure storage for secrets/credentials)
-
-These modules are ideal for developers and DevOps teams who want to automate AWS resource provisioning using **Infrastructure as Code (IaC)** with Terraform.
+- **S3 Bucket** with a unique name
+- **Secrets Manager** to store sensitive config like DB URIs, tokens, etc.
 
 ---
 
-## 🌐 Prerequisites
-
-Before you begin, ensure the following are installed and configured:
-
-- ✅ [Terraform](https://developer.hashicorp.com/terraform/downloads) v1.3 or later  
-- ✅ [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html)  
-- ✅ An AWS IAM user with necessary permissions  
-- ✅ AWS credentials configured via:
-
-```bash
-aws configure
-```
-
----
-
-## 📁 Repository Structure
+## 📁 Directory Structure
 
 ```
-IAC-HCL/
-├── s3/                 # Terraform module for S3 bucket
-├── secret-manager/     # Terraform module for AWS Secrets Manager
+.
+├── s3/
+│   ├── main.tf
+│   ├── outputs.tf
+│   └── variables.tf
+│
+├── secret-manager/
+│   ├── main.tf
+│   ├── secrets.json
+│   └── variables.tf
+│
 └── .gitignore
 ```
 
 ---
 
-## 🔁 Common Terraform Commands
+## 🚀 Getting Started
 
-Run the following commands **inside any module folder** (`s3/` or `secret-manager/`):
+### 🧾 Prerequisites
+
+- [Terraform](https://www.terraform.io/downloads)
+- AWS CLI configured (`aws configure`)
+- IAM user with permission for:
+  - `s3:*`
+  - `secretsmanager:*`
+
+---
+
+## 🪣 Deploy S3 Bucket
+
+1. **Go to S3 folder**
+   ```bash
+   cd s3
+   ```
+
+2. **Edit variables.tf if needed**
+   ```hcl
+   variable "bucket_name" {
+     default = "news3bucket"
+   }
+
+   variable "bucket_prefix" {
+     description = "Prefix for the S3 bucket name"
+     type        = string
+   }
+   ```
+
+3. **Run Terraform**
+   ```bash
+   terraform init
+   terraform plan
+   terraform apply
+   ```
+
+---
+
+## 🔐 Deploy Secrets Manager
+
+1. **Go to secret-manager folder**
+   ```bash
+   cd ../secret-manager
+   ```
+
+2. **Edit `secrets.json` with your app secrets**
+   ```json
+   {
+     "NODE_ENV": "production",
+     "PORT": "3030",
+     "DB_URI": "mongodb+srv://username:password@cluster0.example.net/dbname",
+     "ACCESS_TOKEN_SECRET": "9385C662A2FA1785BCD41B164DE37"
+   }
+   ```
+
+3. **Run Terraform**
+   ```bash
+   terraform init
+   terraform plan -var="secret_name=your-secret-name"
+   terraform apply -var="secret_name=your-secret-name"
+   ```
+
+---
+
+## 📤 Outputs
+
+- `secret_arn` – ARN of the created secret
+- `bucket_name` – Name of the S3 bucket
+- `bucket_arn` – ARN of the bucket
+
+---
+
+## 🧹 Cleanup
 
 ```bash
-terraform init         # Initialize working directory
-terraform validate     # Check if configuration is valid
-terraform plan         # Preview the resources to be created
-terraform apply        # Apply changes and create resources
-terraform destroy      # Tear down created resources
+terraform destroy
 ```
 
 ---
 
-## 📦 Module 1: S3 Bucket
+## 📄 .gitignore
 
-📂 Path: `s3/`  
-Creates an Amazon S3 bucket with optional lifecycle rules (e.g., auto-delete, archive).
-
-### 🔧 Variables
-
-| Variable      | Description                         | Type   | Required |
-|---------------|-------------------------------------|--------|----------|
-| `bucket_name` | Unique name for the S3 bucket       | string | ✅ Yes    |
-
-### ✅ Example Usage
-
-```bash
-cd s3
-terraform init
-terraform apply -var="bucket_name=my-dev-bucket"
+```hcl
+**/.terraform/*
+terraform.tfstate
+terraform.tfstate.*
+.terraform.lock.hcl
+*.tfvars
+*.tfvars.json
+terraform-provider-aws*
+*.tfplan
 ```
 
-Once deployed, you can upload files and manage lifecycle settings directly in AWS Console.
-
 ---
 
-## 📦 Module 2: AWS Secrets Manager
+## 👨‍💻 Author
 
-📂 Path: `secret-manager/`  
-Creates a secure secret in **AWS Secrets Manager**, useful for storing passwords, tokens, DB credentials, and more.
-
-### 🔧 Variables
-
-| Variable        | Description                  | Type   | Required |
-|------------------|------------------------------|--------|----------|
-| `secret_name`    | Name of the secret           | string | ✅ Yes    |
-| `secret_value`   | Value to store securely      | string | ✅ Yes    |
-
-### ✅ Example Usage
-
-```bash
-cd secret-manager
-terraform init
-terraform apply -var="secret_name=db_password" -var="secret_value=SuperSecure123"
-```
-
-You can retrieve the secret via SDK, CLI, or Lambda securely without hardcoding values.
-
----
-
-## 📌 Notes
-
-- Each module is **self-contained** — use only what you need.
-- Follows best practices for naming, structure, and reusability.
-- You can destroy resources at any time using `terraform destroy`.
-
----
-
-## 🙋‍♂️ Need Help?
-
-If you face any issues or want to customize these modules, feel free to open a GitHub issue or contact the maintainer.
-
----
-
-## ⭐ Like this?
-
-If this saved your time or helped you learn something new, please consider giving the repo a ⭐ and sharing it with your team!
-
----
-
-## 🛡️ Disclaimer
-
-> Use at your own risk. Designed for educational and automation purposes. Review code before using in production.
+Made with ❤️ by `Kartikey Tiwari`
