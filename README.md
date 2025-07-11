@@ -7,6 +7,15 @@ This repository provisions two AWS resources:
 
 ---
 
+## 🔗 Clone This Repository
+
+```bash
+git clone https://github.com/Aayan-infotech/IAC-HCL.git
+cd IAC-HCL
+```
+
+---
+
 ## 📁 Directory Structure
 
 ```
@@ -73,13 +82,15 @@ This repository provisions two AWS resources:
    cd ../secret-manager
    ```
 
-2. **Edit `secrets.json` with your app secrets**
+2. **Edit `secrets.json` and add your own secrets:**
+   > ⚠️ **Note:** Do **not** commit real secrets in this file to GitHub. This is just a local file.
+
    ```json
    {
-     "NODE_ENV": "production",
-     "PORT": "3030",
-     "DB_URI": "mongodb+srv://username:password@cluster0.example.net/dbname",
-     "ACCESS_TOKEN_SECRET": "9385C662A2FA1785BCD41B164DE37"
+     "NODE_ENV": "your-environment",
+     "PORT": "your-app-port",
+     "DB_URI": "your-database-uri",
+     "ACCESS_TOKEN_SECRET": "your-secret-token"
    }
    ```
 
